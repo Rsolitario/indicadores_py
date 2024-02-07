@@ -1,0 +1,17 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © solitario
+
+//@version=5
+strategy("Mi script", overlay = true, initial_capital=1000, currency=currency.USD, default_qty_type=strategy.percent_of_equity, default_qty_value=10)
+start_date = input.time(timestamp("2023-02-07T00:00:00"), "Fecha de inicio")
+end_date = input.time(timestamp("2024-12-31T23:59:59"), "Fecha de finalización")
+
+sma50 = ta.sma(close, 50)
+sma200 = ta.sma(close, 200)
+plot(color=color.green, series = sma50)
+plot(color=color.red, series=sma200)
+
+if ta.crossover(sma50, sma200) and time >= start_date and time <= end_date
+    strategy.entry("Buy", strategy.long)
+if ta.crossunder(sma50, sma200) and time >= start_date and time <= end_date
+    strategy.entry("Sell", strategy.short)
